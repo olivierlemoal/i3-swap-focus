@@ -23,6 +23,17 @@ bindsym $mod+Tab exec echo "swap_focus" | ncat --send-only -U "$XDG_RUNTIME_DIR/
 bindsym $mod+Tab exec echo "swap_focus" | nc -w0 -U "$XDG_RUNTIME_DIR/i3/event-listener.sock"
 ```
 
+### Ignore windows
+
+To ignore some windows (e.g windows that belong to scratchpad), just mark them with ``ignore_focus`` in your config :
+
+```
+# Put a term in scratchpad
+exec alacritty --class scratchpad_term
+for_window [instance="scratchpad_term"] mark "ignore_focus", move scratchpad
+```
+
+
 ### Arch Users
 
 It looks like last ncat version has segfaults issues when using Unix sockets (https://github.com/nmap/nmap/issues/2154 still unpatched in arch). Try using `openbsd-netcat` instead. Alternatively, you can use this [ncat static build](https://github.com/ernw/static-toolbox/actions?query=workflow%3ANmap) from ERNW.

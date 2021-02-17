@@ -21,7 +21,7 @@ async def on_unix_connect(i3, reader, writer):
 
 
 def on_window(conn, event):
-    if event.container.window_instance == "scratchpad":
+    if "ignore_focus" in event.container.marks:
         return
     if event.change == 'focus':
         if not window_stack or event.container.id != window_stack[0]:
