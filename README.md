@@ -10,7 +10,7 @@ i3 script to toggle between last windows
 ## Install
 
 ```
-pip install i3-swap-focus
+pip install --upgrade i3-swap-focus
 ```
 
 ### i3 config example
@@ -37,7 +37,7 @@ for_window [instance="scratchpad_term"] mark "ignore_focus", move scratchpad
 
 ### Stay in workspace
 
-This script accept a ``--stay-in-workspace`` flag if you do not wish to focus on a different workspace :
+This script accepts a ``--stay-in-workspace`` flag if you do not wish to focus on a different workspace :
 ```
 exec --no-startup-id i3_swap_focus --stay-in-workspace
 ```
