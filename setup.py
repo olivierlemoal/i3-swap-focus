@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='i3-swap-focus',
-    version='0.1',
+    version='0.2',
     description='i3 script to toggle between last windows',
     packages=find_packages(),
     author='Olivier Le Moal',
