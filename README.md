@@ -7,10 +7,16 @@ i3 script to toggle between last windows
 * [i3ipc](https://github.com/altdesktop/i3ipc-python)
 * Some tool to send data over an unix socket (``ncat`` or ``openbsd-netcat`` recommended)
 
+### Install
+
+```
+pip install i3_swap_focus
+```
+
 ### i3 config example
 
 ```
-exec --no-startup-id "python /usr/local/bin/i3_swap_focus.py"
+exec --no-startup-id i3_swap_focus
 # Using ncat
 bindsym $mod+Tab exec echo "swap_focus" | ncat --send-only -U "$XDG_RUNTIME_DIR/i3/swap_focus.sock"
 # Using openbsd nc
