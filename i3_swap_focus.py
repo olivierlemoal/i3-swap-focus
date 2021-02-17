@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
 
-# Use following config in i3 :
-# exec --no-startup-id "python /usr/local/bin/i3_swap_focus.py"
-# bindsym $mod+Tab exec echo "swap_focus" | ncat --send-only -U "$XDG_RUNTIME_DIR/i3/swap_focus.sock"
-
 import os
 import asyncio
 from i3ipc.aio import Connection
