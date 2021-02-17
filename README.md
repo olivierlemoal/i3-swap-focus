@@ -20,7 +20,7 @@ exec --no-startup-id i3_swap_focus
 # Using ncat
 bindsym $mod+Tab exec echo "swap_focus" | ncat --send-only -U "$XDG_RUNTIME_DIR/i3/swap_focus.sock"
 # Using openbsd nc
-bindsym $mod+Tab exec echo "swap_focus" | nc -w0 -U "$XDG_RUNTIME_DIR/i3/event-listener.sock"
+bindsym $mod+Tab exec echo "swap_focus" | nc -w0 -U "$XDG_RUNTIME_DIR/i3/swap_focus.sock"
 ```
 
 ## Features
