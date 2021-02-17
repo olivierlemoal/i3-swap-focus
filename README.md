@@ -10,7 +10,7 @@ i3 script to toggle between last windows
 ### Install
 
 ```
-pip install i3_swap_focus
+pip install i3-swap-focus
 ```
 
 ### i3 config example
