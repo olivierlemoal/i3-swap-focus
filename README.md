@@ -37,3 +37,7 @@ for_window [instance="scratchpad_term"] mark "ignore_focus", move scratchpad
 ### Arch Users
 
 It looks like last ncat version has segfaults issues when using Unix sockets (https://github.com/nmap/nmap/issues/2154 still unpatched in arch). Try using `openbsd-netcat` instead. Alternatively, you can use this [ncat static build](https://github.com/ernw/static-toolbox/actions?query=workflow%3ANmap) from ERNW.
+
+### Credits
+
+Based on [gvalkov script](https://github.com/i3/i3/issues/838#issuecomment-338426921)
