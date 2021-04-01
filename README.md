@@ -1,6 +1,6 @@
 # i3-swap-focus
 
-i3 script to toggle between last windows
+i3/sway script to toggle between last windows
 
 ### Requirements
 
@@ -13,14 +13,14 @@ i3 script to toggle between last windows
 pip install --upgrade i3-swap-focus
 ```
 
-### i3 config example
+### i3/sway config example
 
 ```
 exec --no-startup-id i3_swap_focus
 # Using ncat
-bindsym $mod+Tab exec echo "swap_focus" | ncat --send-only -U "$XDG_RUNTIME_DIR/i3/swap_focus.sock"
+bindsym $mod+Tab exec echo "swap_focus" | ncat --send-only -U "$XDG_RUNTIME_DIR/swap_focus.sock"
 # Using openbsd nc
-bindsym $mod+Tab exec echo "swap_focus" | nc -w0 -U "$XDG_RUNTIME_DIR/i3/swap_focus.sock"
+bindsym $mod+Tab exec echo "swap_focus" | nc -w0 -U "$XDG_RUNTIME_DIR/swap_focus.sock"
 ```
 
 ## Features
@@ -32,7 +32,12 @@ To ignore some windows (e.g windows that belong to scratchpad), just mark them w
 ```
 # Put a term in scratchpad
 exec alacritty --class scratchpad_term
+
+# i3 :
 for_window [instance="scratchpad_term"] mark "ignore_focus", move scratchpad
+
+# sway :
+for_window [app_id="scratchpad"] mark "ignore_focus", move scratchpad
 ```
 
 ### Stay in workspace
