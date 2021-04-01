@@ -5,7 +5,7 @@ import asyncio
 import argparse
 from i3ipc.aio import Connection
 
-socket = '{XDG_RUNTIME_DIR}/i3/swap_focus.sock'.format_map(os.environ)
+socket = '{XDG_RUNTIME_DIR}/swap_focus.sock'.format_map(os.environ)
 window_stack = []
 
 
