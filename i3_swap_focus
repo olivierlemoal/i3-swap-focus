@@ -1,30 +1,29 @@
-#!/usr/bin/env python3
-
 import os
 import asyncio
 import argparse
+import signal
+import sys
+import atexit
 from i3ipc.aio import Connection
 
-socket = '{XDG_RUNTIME_DIR}/swap_focus.sock'.format_map(os.environ)
+pid_file = '{XDG_RUNTIME_DIR}/swap_focus.pid'.format_map(os.environ)
 window_stack = []
 
 
-async def on_unix_connect(i3, reader, writer):
-    while True:
-        cmd = await reader.readline()
-        cmd = cmd.strip()
-        if not cmd:
-            break
+async def on_signal(i3):
+    if window_stack:
+        window_id = window_stack.pop()
+        if stay_in_workspace:
+            current_workspace = (await i3.get_tree()).find_focused().workspace().id
+            window_workspace = (await i3.get_tree()).find_by_id(window_id).workspace().id
+            if current_workspace != window_workspace:
+                return
+        cmd = f'[con_id={window_id}] focus'
+        await i3.command(cmd)
 
-        if cmd == b'swap_focus' and window_stack:
-            window_id = window_stack.pop()
-            if stay_in_workspace:
-                current_workspace = (await i3.get_tree()).find_focused().workspace().id
-                window_workspace = (await i3.get_tree()).find_by_id(window_id).workspace().id
-                if current_workspace != window_workspace:
-                    continue
-            cmd = '[con_id=%s] focus' % window_id
-            await i3.command(cmd)
+
+def exit_handler():
+    os.remove(pid_file)
 
 
 def on_window(conn, event):
@@ -38,21 +37,19 @@ def on_window(conn, event):
 
 
 async def main():
-    if os.path.exists(socket):
-        os.unlink(socket)
+    with open(pid_file, 'w') as file:
+        file.write(str(os.getpid()))
+    atexit.register(exit_handler)
 
     i3 = await Connection(auto_reconnect=True).connect()
-    server = await asyncio.start_unix_server(lambda r, w: on_unix_connect(i3, r, w), socket)
 
-    await i3.get_workspaces()
-
+    loop = asyncio.get_event_loop()
+    loop.add_signal_handler(signal.SIGUSR1, lambda: asyncio.create_task(on_signal(i3)))
     i3.on('window::focus', on_window)
     await i3.main()
-    await server.wait_closed()
 
 
 parser = argparse.ArgumentParser(description='i3 script to toggle between last windows.')
 parser.add_argument('--stay-in-workspace', action=argparse.BooleanOptionalAction, default=False, help="Do not switch focus if window is on a different workspace")
 stay_in_workspace = parser.parse_args().stay_in_workspace
-
 asyncio.run(main())
