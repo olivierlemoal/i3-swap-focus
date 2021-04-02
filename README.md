@@ -33,7 +33,7 @@ exec alacritty --class scratchpad_term
 for_window [instance="scratchpad_term"] mark "ignore_focus", move scratchpad
 
 # sway :
-for_window [app_id="scratchpad"] mark "ignore_focus", move scratchpad
+for_window [app_id="scratchpad_term"] mark "ignore_focus", move scratchpad
 ```
 
 ### Stay in workspace
