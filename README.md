@@ -16,7 +16,7 @@ pip install --upgrade i3-swap-focus
 
 ```
 exec i3-swap-focus
-bindsym $mod+Tab exec pkill -USR1 -F ${XDG_RUNTIME_DIR}/swap_focus.pid
+bindsym $mod+Tab exec pkill -USR1 -F "${XDG_RUNTIME_DIR}/swap_focus.pid"
 ```
 
 ## Features
