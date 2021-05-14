@@ -19,6 +19,7 @@ async def on_signal(i3):
             current_workspace = (await i3.get_tree()).find_focused().workspace().id
             window_workspace = (await i3.get_tree()).find_by_id(window_id).workspace().id
             if current_workspace != window_workspace:
+                window_stack.append(window_id)
                 return
         cmd = f'[con_id={window_id}] focus'
         await i3.command(cmd)
