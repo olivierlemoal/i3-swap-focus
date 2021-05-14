@@ -35,7 +35,6 @@ def on_window(conn, event):
     if event.change == 'focus':
         if not window_stack or event.container.id != window_stack[0]:
             window_stack.insert(0, event.container.id)
-            print(f'window_stack = {window_stack}')
             if len(window_stack) > 2:
                 del window_stack[2:]
 
@@ -48,16 +47,13 @@ async def main():
     i3 = await Connection(auto_reconnect=True).connect()
 
     loop = asyncio.get_event_loop()
-    #loop.add_signal_handler(signal.SIGUSR1, lambda: asyncio.create_task(on_signal(i3)))
     loop.add_signal_handler(signal.SIGUSR1, lambda: loop.create_task(on_signal(i3)))
     i3.on('window::focus', on_window)
     await i3.main()
 
 
 parser = argparse.ArgumentParser(description='i3 script to toggle between last windows.')
-#parser.add_argument('--stay-in-workspace', action=argparse.BooleanOptionalAction, default=False, help="Do not switch focus if window is on a different workspace")
 parser.add_argument('--stay-in-workspace', default=False, help="Do not switch focus if window is on a different workspace")
 stay_in_workspace = parser.parse_args().stay_in_workspace
-#asyncio.run(main())
 main_loop = asyncio.get_event_loop()
 main_loop.run_until_complete(main())
