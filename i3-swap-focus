@@ -17,7 +17,11 @@ async def on_signal(i3):
         window_id = window_stack.pop()
         if stay_in_workspace:
             current_workspace = (await i3.get_tree()).find_focused().workspace().id
-            window_workspace = (await i3.get_tree()).find_by_id(window_id).workspace().id
+            container = (await i3.get_tree()).find_by_id(window_id)
+            if not container:
+                window_stack.append(window_id)
+                return
+            window_workspace = container.workspace().id
             if current_workspace != window_workspace:
                 window_stack.append(window_id)
                 return
@@ -47,12 +51,13 @@ async def main():
     i3 = await Connection(auto_reconnect=True).connect()
 
     loop = asyncio.get_event_loop()
-    loop.add_signal_handler(signal.SIGUSR1, lambda: asyncio.create_task(on_signal(i3)))
+    loop.add_signal_handler(signal.SIGUSR1, lambda: loop.create_task(on_signal(i3)))
     i3.on('window::focus', on_window)
     await i3.main()
 
 
 parser = argparse.ArgumentParser(description='i3 script to toggle between last windows.')
-parser.add_argument('--stay-in-workspace', action=argparse.BooleanOptionalAction, default=False, help="Do not switch focus if window is on a different workspace")
+parser.add_argument('--stay-in-workspace', default=False, help="Do not switch focus if window is on a different workspace")
 stay_in_workspace = parser.parse_args().stay_in_workspace
-asyncio.run(main())
+main_loop = asyncio.get_event_loop()
+main_loop.run_until_complete(main())
