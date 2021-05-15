@@ -1,6 +1,6 @@
 # i3-swap-focus
 
-i3/sway script to toggle between last windows
+i3/sway script to toggle between last windows. For older Python version (<3.7), use this [branch](https://github.com/olivierlemoal/i3-swap-focus/tree/python-3.6-support]).
 
 ### Requirements
 
