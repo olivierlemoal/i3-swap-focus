@@ -17,7 +17,11 @@ async def on_signal(i3):
         window_id = window_stack.pop()
         if stay_in_workspace:
             current_workspace = (await i3.get_tree()).find_focused().workspace().id
-            window_workspace = (await i3.get_tree()).find_by_id(window_id).workspace().id
+            container = (await i3.get_tree()).find_by_id(window_id)
+            if not container:
+                window_stack.append(window_id)
+                return
+            window_workspace = container.workspace().id
             if current_workspace != window_workspace:
                 window_stack.append(window_id)
                 return
