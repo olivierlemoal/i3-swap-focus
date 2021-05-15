@@ -15,7 +15,7 @@ you want the last version go to the [version on the master branch](https://githu
 ## Install
 
 ```python
-pip install --upgrade i3-swap-focus
+python setup.py install
 ```
 
 ### i3/sway config example
