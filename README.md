@@ -8,8 +8,14 @@ i3/sway script to toggle between last windows. For older Python version (<3.7), 
 
 ## Install
 
+Recommanded way is to use a Python package installer such as [uv](https://docs.astral.sh/uv/) or [pipx](https://github.com/pypa/pipx)
+
 ```
-pip install --upgrade i3-swap-focus
+## Using uv
+uv tool install git+https://github.com/olivierlemoal/i3-swap-focus
+
+## Using pipx
+pipx install i3_swap_focus
 ```
 
 ### i3/sway config example
