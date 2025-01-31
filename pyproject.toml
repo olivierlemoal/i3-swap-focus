@@ -1,13 +1,12 @@
 [project]
 name = "i3-swap-focus"
-version = "0.4.4"
+version = "0.4.5"
 description = "i3/sway script to toggle between last windows"
 authors = [
     {name = "Olivier Le Moal", email = "mail@olivierlemoal.fr"},
 ]
 dependencies = [
-    "setuptools",
-    "i3ipc",
+    "i3ipc"
 ]
 requires-python = ">=3.7"
 readme = "README.md"
