@@ -4,18 +4,18 @@ import os
 import asyncio
 import argparse
 import signal
-import sys
 import atexit
 from i3ipc.aio import Connection
 
 pid_file = '{XDG_RUNTIME_DIR}/swap_focus.pid'.format_map(os.environ)
 window_stack = []
 
+config = {}
 
 async def on_signal(i3):
     if window_stack:
         window_id = window_stack.pop()
-        if stay_in_workspace:
+        if config["stay_in_workspace"]:
             current_workspace = (await i3.get_tree()).find_focused().workspace().id
             container = (await i3.get_tree()).find_by_id(window_id)
             if not container:
@@ -43,7 +43,7 @@ def on_window(conn, event):
                 del window_stack[2:]
 
 
-async def main():
+async def run():
     with open(pid_file, 'w') as file:
         file.write(str(os.getpid()))
     atexit.register(exit_handler)
@@ -55,8 +55,10 @@ async def main():
     i3.on('window::focus', on_window)
     await i3.main()
 
+def main():
+    parser = argparse.ArgumentParser(description='i3 script to toggle between last windows.')
+    parser.add_argument('--stay-in-workspace', action=argparse.BooleanOptionalAction, default=False, help="Do not switch focus if window is on a different workspace")
+    config["stay_in_workspace"] = parser.parse_args().stay_in_workspace
+    asyncio.run(run())
 
-parser = argparse.ArgumentParser(description='i3 script to toggle between last windows.')
-parser.add_argument('--stay-in-workspace', action=argparse.BooleanOptionalAction, default=False, help="Do not switch focus if window is on a different workspace")
-stay_in_workspace = parser.parse_args().stay_in_workspace
-asyncio.run(main())
+main()
